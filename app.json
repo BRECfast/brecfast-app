@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "BRECfast",
+    "description": "",
+    "slug": "brecfast-app",
+    "sdkVersion": "25.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "version": "1.0.0",
+    "ios": {
+      "bundleIdentifier": "com.brecfast.app",
+      "loadJSInBackgroundExperimental": false,
+      "splash": {
+        "image": "./assets/splash.png"
+      },
+      "config": {
+        "googleMapsApiKey": "AIzaSyDyJ-BYWCGNfr5Shj9OcHXpPwWTYjp3fIc"
+      }
+    },
+    "android": {
+      "package": "com.brecfast.app",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDyJ-BYWCGNfr5Shj9OcHXpPwWTYjp3fIc"
+        }
+      }
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#00407B"
+    }
+  }
+}
