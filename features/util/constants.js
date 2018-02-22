@@ -2,12 +2,12 @@ import {Constants} from 'expo';
 
 const ENV = {
   development: {
-    baseUrl: 'http://dev-letmelift-api.azurewebsites.net',
+    baseUrl: '',
     segmentIosKey: 'WZoERMhnFpmagbzf533b9dZi5riZzlPu',
     segmentAndroidKey: 'r2WYwBHkLg6Nba61X1K7g0ckjBvg4T3Q',
   },
   default: {
-    baseUrl: 'http://dev-letmelift-api.azurewebsites.net',
+    baseUrl: '',
     segmentIosKey: 'WZoERMhnFpmagbzf533b9dZi5riZzlPu',
     segmentAndroidKey: 'r2WYwBHkLg6Nba61X1K7g0ckjBvg4T3Q',
   },

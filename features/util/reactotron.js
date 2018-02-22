@@ -8,7 +8,7 @@ import Reactotron, {
 
 if (__DEV__) {
   Reactotron.configure({
-    name: 'Elevator3.LetMeLift',
+    name: 'BRECfast',
   })
     .use(trackGlobalErrors())
     .use(openInEditor())
