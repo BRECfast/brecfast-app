@@ -9,6 +9,7 @@ import './features/util/reactotron';
 import {SEGMENT_IOS_KEY, SEGMENT_ANDROID_KEY} from './features/util/constants';
 import Navigator from './features/navigation/Navigator';
 import {registerDropdown} from './features/alerts/service';
+import {registerForLocation} from './features/permissions/index';
 
 // gets the current screen from navigation state
 function getCurrentRoute(navigationState) {
@@ -40,6 +41,8 @@ class App extends React.Component {
 
     this._refreshAppState();
     AppState.addEventListener('change', this._handleAppStateChange);
+
+    registerForLocation();
   }
 
   componentWillUnmount() {

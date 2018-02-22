@@ -5,6 +5,7 @@ import EventListingScreen from '../events/EventListingScreen';
 import EventDetailsScreen from '../events/EventDetailsScreen';
 import CreateEventScreen from '../events/CreateEventScreen';
 import MyProfileScreen from '../user/MyProfileScreen';
+import ParkMapScreen from '../parks/ParkMapScreen';
 
 const Navigator = StackNavigator(
   {
@@ -12,6 +13,7 @@ const Navigator = StackNavigator(
     EventDetails: EventDetailsScreen,
     CreateEvent: CreateEventScreen,
     MyProfile: MyProfileScreen,
+    ParkMap: ParkMapScreen,
   },
   {
     navigationOptions: {

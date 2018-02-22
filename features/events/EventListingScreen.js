@@ -48,13 +48,22 @@ class EventListingScreen extends Component {
         </TouchableOpacity>
       ),
       headerRight: !!params.filter && (
-        <TouchableOpacity
-          onPress={params.filter}
-          style={{marginRight: 10}}
-          hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
-        >
-          <MaterialCommunityIcons name="filter" size={24} color="#888" />
-        </TouchableOpacity>
+        <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ParkMap')}
+            style={{marginRight: 10}}
+            hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+          >
+            <MaterialCommunityIcons name="map" size={24} color="#888" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={params.filter}
+            style={{marginRight: 10}}
+            hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+          >
+            <MaterialCommunityIcons name="filter" size={24} color="#888" />
+          </TouchableOpacity>
+        </View>
       ),
     };
   };
