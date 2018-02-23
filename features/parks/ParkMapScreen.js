@@ -3,6 +3,7 @@ import {
   Alert,
   Dimensions,
   StyleSheet,
+  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -59,8 +60,7 @@ class ParkMapScreen extends Component {
     const {location} = this.state;
     const {data: {loading, allParks}} = this.props;
     const markers = (allParks || []).map(x => ({
-      id: x.id,
-      name: x.name,
+      ...x,
       coords: {
         latitude: x.latitude,
         longitude: x.longitude,
@@ -108,13 +108,15 @@ class ParkMapScreen extends Component {
                   {...item}
                   containerStyle={{
                     width: width * 0.8 - 20,
-                    height: 100,
+                    height: 300,
                   }}
-                  title={item.id}
+                  title={item.name}
                   index={itemIndex}
                   currentIndex={currentIndex}
                   animatedValue={animatedValue}
-                />
+                >
+                  <Text>{JSON.stringify(item, null, 2)}</Text>
+                </Card>
               </View>
             )}
           />
@@ -147,6 +149,12 @@ export default graphql(gql`
       name
       latitude
       longitude
+      address
+      city
+      classification
+      activities {
+        name
+      }
     }
   }
 `)(ParkMapScreen);
