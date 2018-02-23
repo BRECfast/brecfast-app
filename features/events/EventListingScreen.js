@@ -140,7 +140,7 @@ class EventListingScreen extends Component {
     return (
       <TouchableOpacity
         style={styles.item}
-        activeOpacity={0.8}
+        activeOpacity={0.5}
         onPress={() =>
           this.props.navigation.navigate('EventDetails', {event: item})
         }
