@@ -129,7 +129,7 @@ class EventListingScreen extends Component {
   }
 
   _renderItem = item => {
-    let spotsRemaining = item.maxParticipants - item.participationsCount;
+    // let spotsRemaining = item.maxParticipants - item.participationsCount;
     return (
       <TouchableOpacity
         style={styles.item}
@@ -262,7 +262,12 @@ class EventListingScreen extends Component {
         <ActionButton
           buttonColor="rgba(231,76,60,1)"
           onPress={() => {
-            this.props.navigation.navigate('CreateEvent');
+            this.props.navigation.navigate('CreateEvent', {
+              refetch: () => {
+                console.log('fetch more...');
+                this.props.data.refetch();
+              },
+            });
           }}
           renderIcon={() => (
             <MaterialCommunityIcons name="plus" size={24} color="#FFF" />

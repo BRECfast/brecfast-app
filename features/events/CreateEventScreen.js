@@ -37,6 +37,7 @@ class CreateEventScreen extends Component {
     park: null,
     minParticipants: '',
     maxParticipants: '',
+    invitees: [],
   };
 
   componentWillMount() {
@@ -44,8 +45,9 @@ class CreateEventScreen extends Component {
   }
 
   _create = async () => {
+    const {goBack, state} = this.props.navigation;
     try {
-      await this.props.createEvent({
+      const event = await this.props.createEvent({
         variables: {
           activityId: this.state.activity.id,
           parkId: this.state.park.id,
@@ -54,7 +56,9 @@ class CreateEventScreen extends Component {
           maxParticipants: parseInt(this.state.maxParticipants, 10),
         },
       });
-      this.props.navigation.goBack();
+      console.log(event);
+      state.params.refetch();
+      goBack();
     } catch (error) {
       alertWithType('error', 'Whoops', 'Something went wrong...');
     }
@@ -62,7 +66,7 @@ class CreateEventScreen extends Component {
 
   render() {
     const {data: {allParks = [], allActivities = []}} = this.props;
-    const {activity, park} = this.state;
+    const {activity, park, invitees} = this.state;
     const activityName = activity ? activity.title : 'Select Activity';
     const parkName = park ? park.title : 'Select Park';
     return (
@@ -277,12 +281,20 @@ class CreateEventScreen extends Component {
                     justifyContent: 'center',
                   }}
                 >
-                  <Text>Invitees</Text>
+                  <Text>Invitees ({invitees.length})</Text>
                 </View>
               }
               control={
                 <MaterialCommunityIcons name="chevron-right" size={32} />
               }
+              onPress={() => {
+                this.props.navigation.navigate('EventInvitations', {
+                  invitees,
+                  onUpdate: selected => {
+                    this.setState({invitees: selected});
+                  },
+                });
+              }}
               last
             />
           </Card>

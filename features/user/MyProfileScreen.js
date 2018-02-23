@@ -169,7 +169,11 @@ class MyProfileScreen extends Component {
             last
           />
         </Card>
-        <Text style={{marginTop: 20, color: '#888', 'marginLeft': 10}}>INTERESTS</Text>
+        <Text
+          style={{marginLeft: 10, marginTop: 20, color: '#888', fontSize: 12}}
+        >
+          INTERESTS
+        </Text>
         <Card>
           <TagSelect
             value={currentUser.interests}
