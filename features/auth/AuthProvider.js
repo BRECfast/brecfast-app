@@ -4,6 +4,7 @@ import {Constants} from 'expo';
 import PropTypes from 'prop-types';
 import {withApollo} from 'react-apollo';
 import gql from 'graphql-tag';
+import {alertWithType} from '../alerts/service';
 
 const AUTHENTICATE_QUERY = gql`
   mutation authenticate($deviceId: String!) {
@@ -94,7 +95,7 @@ class UserProvider extends Component {
       });
       return response.data.authenticate.token;
     } catch (error) {
-      console.error(error);
+      alertWithType('error', 'Whoops', error.message);
       return null;
     }
   }
@@ -106,7 +107,7 @@ class UserProvider extends Component {
       });
       return response.data.currentUser;
     } catch (error) {
-      console.error(error);
+      alertWithType('error', 'Whoops', error.message);
       return null;
     }
   }
