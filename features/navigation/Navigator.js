@@ -17,10 +17,14 @@ const Navigator = StackNavigator(
   },
   {
     navigationOptions: {
+      headerTitleStyle: [iOSUIKit.title3, {
+        color: '#fff',
+        fontWeight: 'bold',
+      }],
+      headerTintColor: '#fff',
       headerStyle: {
-        backgroundColor: '#FFF',
+        backgroundColor: '#556535',
       },
-      headerTitleStyle: [iOSUIKit.title3],
     },
   }
 );

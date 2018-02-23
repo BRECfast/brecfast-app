@@ -23,6 +23,7 @@ class CreateEventScreen extends Component {
           title="Create"
           onPress={params.create}
           style={{marginRight: 10}}
+          color="#fff"
           hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
         />
       ),
