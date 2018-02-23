@@ -1,4 +1,4 @@
-import {STYLES, ASSETS, COLORS} from '../../features/util/constants';
+import {STYLES, ASSETS, COLORS, getIcon} from '../../features/util/constants';
 import React, {Component} from 'react';
 import {Alert, StyleSheet, Text, TouchableOpacity, View, Image, StatusBar} from 'react-native';
 
@@ -34,7 +34,7 @@ async function fetchEvent(date) {
             longitude: 91.1403,
           },
           activity: {
-            id: 'baseball'
+            id: 'baseball',
           },
           participations: [],
           minParticipants: 0,
@@ -159,7 +159,7 @@ class EventListingScreen extends Component {
           }}
         >
           <Image
-            source={ASSETS[item.activity.id]}
+            source={getIcon(item.activity.id)}
             style={{
               width:44,
               height:44,
