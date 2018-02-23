@@ -36,6 +36,9 @@ export const STYLES = StyleSheet.create({
     alignItems: 'center',
   }
 });
+export const COLORS = {
+  'grey': '#bfbfbf',
+}
 export const ASSETS = {
   'baseball': require('../../assets/icon/baseball.png'),
 };
