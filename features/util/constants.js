@@ -39,6 +39,7 @@ export const STYLES = StyleSheet.create({
 export const COLORS = {
   'grey': '#bfbfbf',
   'green': '#556535',
+  'blue': '#007AFF',
 }
 export const ASSETS = {
   'baseball': require('../../assets/icon/baseball.png'),

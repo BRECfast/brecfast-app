@@ -100,6 +100,7 @@ class CreateEventScreen extends Component {
                     <ModalSelector
                       title="Activities"
                       items={allActivities}
+                      showIcons
                       onSelect={activity => {
                         this.setState({activity});
                       }}
@@ -303,6 +304,10 @@ export default compose(
         title: name
         latitude
         longitude
+      }
+      allUsers {
+        id
+        name
       }
     }
   `),

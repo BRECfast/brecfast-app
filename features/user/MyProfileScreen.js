@@ -6,7 +6,9 @@ import md5 from 'md5';
 import {graphql, compose} from 'react-apollo';
 import gql from 'graphql-tag';
 import {TagSelect} from 'react-native-tag-select';
+
 import Loading from '../components/LoadIng';
+import {COLORS} from '../../features/util/constants';
 
 class MyProfileScreen extends Component {
   static navigationOptions = ({navigation}) => {
@@ -167,12 +169,13 @@ class MyProfileScreen extends Component {
             last
           />
         </Card>
-        <Text style={{marginTop: 20, color: '#888'}}>INTERESTS</Text>
+        <Text style={{marginTop: 20, color: '#888', 'marginLeft': 10}}>INTERESTS</Text>
         <Card>
           <TagSelect
             value={currentUser.interests}
             data={allActivities}
             labelAttr="name"
+            itemStyleSelected={{backgroundColor: COLORS.blue}}
             ref={tag => {
               this.tag = tag;
             }}
