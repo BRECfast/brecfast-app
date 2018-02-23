@@ -129,7 +129,7 @@ class EventListingScreen extends Component {
   }
 
   _renderItem = item => {
-    let spotsRemaining = item.maxParticipants - item.participationsCount;
+    // let spotsRemaining = item.maxParticipants - item.participationsCount;
     return (
       <TouchableOpacity
         style={styles.item}
