@@ -1,6 +1,14 @@
 import {STYLES, ASSETS, COLORS} from '../../features/util/constants';
 import React, {Component} from 'react';
-import {Alert, StyleSheet, Text, TouchableOpacity, View, Image, StatusBar} from 'react-native';
+import {
+  Alert,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+  StatusBar,
+} from 'react-native';
 
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import ActionButton from 'react-native-action-button';
@@ -34,7 +42,7 @@ async function fetchEvent(date) {
             longitude: 91.1403,
           },
           activity: {
-            id: 'baseball'
+            id: 'baseball',
           },
           participations: [],
           minParticipants: 0,
@@ -52,7 +60,12 @@ class EventListingScreen extends Component {
     return {
       headerTintColor: '#fff',
       headerStyle: {backgroundColor: '#556535'},
-      headerTitle: <Image source={require('../../assets/brand.png')} style={{height: 44, width: 157, resizeMode: 'contain' }} />,
+      headerTitle: (
+        <Image
+          source={require('../../assets/brand.png')}
+          style={{height: 44, width: 157, resizeMode: 'contain'}}
+        />
+      ),
       headerLeft: (
         <TouchableOpacity
           onPress={() => navigation.navigate('ParkMap')}
@@ -79,10 +92,24 @@ class EventListingScreen extends Component {
           )}
           <TouchableOpacity
             onPress={params.filter}
-            style={{marginRight: 10, borderWidth: 1.5, borderColor: "#fff", borderRadius: 16, width: 32, height: 32, justifyContent: 'center', alignItems: 'center'}}
+            style={{
+              marginRight: 10,
+              borderWidth: 1.5,
+              borderColor: '#fff',
+              borderRadius: 16,
+              width: 32,
+              height: 32,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
             hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
           >
-            <MaterialCommunityIcons name="chevron-down" size={20} color="#fff" style={{marginTop: 3}} />
+            <MaterialCommunityIcons
+              name="chevron-down"
+              size={20}
+              color="#fff"
+              style={{marginTop: 3}}
+            />
           </TouchableOpacity>
         </View>
       ),
@@ -161,29 +188,53 @@ class EventListingScreen extends Component {
           <Image
             source={ASSETS[item.activity.id]}
             style={{
-              width:44,
-              height:44,
+              width: 44,
+              height: 44,
             }}
           />
         </View>
         <View style={{flex: 1}}>
-          <Text style={{
-            fontWeight: 'bold',
-          }}>{item.name}</Text>
+          <Text
+            style={{
+              fontWeight: 'bold',
+            }}
+          >
+            {item.name}
+          </Text>
           <Text style={[STYLES.textMuted]}>{item.name}</Text>
           {item.maxParticipants && (
-            <Text style={[STYLES.textMuted, (spotsRemaining > 0 ? STYLES.textColorBlue : STYLES.textMuted)]}>
-              {spotsRemaining} spots
-              remaining
+            <Text
+              style={[
+                STYLES.textMuted,
+                spotsRemaining > 0 ? STYLES.textColorBlue : STYLES.textMuted,
+              ]}
+            >
+              {spotsRemaining} spots remaining
             </Text>
           )}
         </View>
-        <View style={{display: 'flex', height: '100%', width: 75, flexDirection: 'column', justifyContent: 'space-between'}}>
-          <Text style={[STYLES.textMuted, {width: '100%', textAlign: 'right'}]}>11:00 am</Text>
-          <Text style={[STYLES.textMuted, {width: '100%', textAlign: 'right'}]}>1 mile</Text>
+        <View
+          style={{
+            display: 'flex',
+            height: '100%',
+            width: 75,
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Text style={[STYLES.textMuted, {width: '100%', textAlign: 'right'}]}>
+            11:00 am
+          </Text>
+          <Text style={[STYLES.textMuted, {width: '100%', textAlign: 'right'}]}>
+            1 mile
+          </Text>
         </View>
         <View>
-          <MaterialCommunityIcons name="chevron-right" size={18} color={COLORS.grey} />
+          <MaterialCommunityIcons
+            name="chevron-right"
+            size={18}
+            color={COLORS.grey}
+          />
         </View>
       </TouchableOpacity>
     );
@@ -274,7 +325,7 @@ const styles = StyleSheet.create({
   },
   textMuted: {
     color: '#8F8E94',
-  }
+  },
 });
 
 export default EventListingScreen;
