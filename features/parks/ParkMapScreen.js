@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {
   Alert,
   Dimensions,
+  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -14,6 +15,7 @@ import SideSwipe from 'react-native-sideswipe';
 import {graphql} from 'react-apollo';
 import gql from 'graphql-tag';
 
+import {COLORS, getIcon} from '../../features/util/constants';
 import Card from '../components/Card';
 
 const {width, height} = Dimensions.get('window');
@@ -27,14 +29,20 @@ class ParkMapScreen extends Component {
     const params = navigation.state.params || {};
 
     return {
-      title: 'Park Map',
+      title: 'Parks',
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        color: '#fff',
+        fontWeight: 'bold',
+      },
+      headerStyle: {backgroundColor: '#556535'},
       headerRight: !!params.filter && (
         <TouchableOpacity
           onPress={params.filter}
-          style={{marginRight: 10}}
+          style={{marginRight: 10, borderWidth: 1.5, borderColor: "#fff", borderRadius: 16, width: 32, height: 32, justifyContent: 'center', alignItems: 'center'}}
           hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
         >
-          <MaterialCommunityIcons name="filter" size={24} color="#888" />
+          <MaterialCommunityIcons name="chevron-down" size={20} color="#fff" style={{marginTop: 3}} />
         </TouchableOpacity>
       ),
     };
@@ -108,14 +116,42 @@ class ParkMapScreen extends Component {
                   {...item}
                   containerStyle={{
                     width: width * 0.8 - 20,
-                    height: 300,
+                    flexDirection: 'row',
+                    backgroundColor: '#FFF',
+                    padding: 16,
+                    shadowOffset: {width: 0, height: 4},
+                    shadowRadius: 8,
+                    borderRadius: 24,
+                    shadowColor: '#000',
+                    shadowOpacity: 0.2,
+                    marginTop: 12,
+                    marginBottom: 16,
                   }}
-                  title={item.name}
+
                   index={itemIndex}
                   currentIndex={currentIndex}
                   animatedValue={animatedValue}
+                  style={{
+                    flexDirection: 'row',
+                  }}
                 >
-                  <Text>{JSON.stringify(item, null, 2)}</Text>
+                  <View style={{ flex: 1 }}>
+                    <Text style={{ fontWeight: 'bold' }}>{item.name}</Text>
+                    <Text>{item.address}</Text>
+                    <Text>{item.city}, LA {item.zipcode}</Text>
+                    <Text style={{fontWeight: 'bold', marginTop: 8}}>Available Activities</Text>
+                    <View style={{ width: '100%', flexDirection: 'row' }}>
+                      {item.activities.map(activity => <Image key={activity.id} source={getIcon(activity.id)} style={{
+                          height: 16,
+                          width: 16,
+                          marginRight: 8,
+                        }} />)}
+                    </View>
+                    {/* <Text>{JSON.stringify(item, null, 2)}</Text> */}
+                  </View>
+                  <View style={{width: 18 }}>
+                    <MaterialCommunityIcons name="chevron-right" size={18} color={COLORS.grey} />
+                  </View>
                 </Card>
               </View>
             )}
@@ -151,8 +187,10 @@ export default graphql(gql`
       longitude
       address
       city
+      zipcode
       classification
       activities {
+        id
         name
       }
     }
