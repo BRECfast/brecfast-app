@@ -21,7 +21,8 @@ class MyProfileScreen extends Component {
               <Button
                 title="Edit"
                 onPress={params.edit}
-                style={{marginRight: 10}}
+                style={{marginRight: 10, color: '#fff'}}
+                color="#fff"
                 hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
               />
             )}
@@ -30,7 +31,8 @@ class MyProfileScreen extends Component {
               <Button
                 title="Update"
                 onPress={params.update}
-                style={{marginRight: 10}}
+                style={{marginRight: 10, color: '#fff'}}
+                color="#fff"
                 hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
               />
             )}

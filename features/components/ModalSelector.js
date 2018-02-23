@@ -12,6 +12,8 @@ import {Feather} from '@expo/vector-icons';
 import {Header, List, ListItem} from 'react-native-elements';
 import SafeAreaView from 'react-native-safe-area-view';
 
+import {COLORS, getIcon} from '../../features/util/constants';
+
 class ModalSelector extends Component {
   state = {
     show: false,
@@ -27,7 +29,7 @@ class ModalSelector extends Component {
         >
           <Header
             statusBarProps={{barStyle: 'light-content'}}
-            outerContainerStyles={{height: 85, backgroundColor: '#4798B1'}}
+            outerContainerStyles={{height: 85, backgroundColor: COLORS.green}}
             leftComponent={
               <TouchableOpacity
                 onPress={() => {
@@ -40,14 +42,14 @@ class ModalSelector extends Component {
             }
             centerComponent={{
               text: this.props.title,
-              style: {...iOSUIKit.title3Object, color: '#fff'},
+              style: {...iOSUIKit.title3Object, color: '#fff', fontWeight: 'bold'},
             }}
           />
           <TextInput
             style={{
               height: 40,
-              borderColor: 'gray',
-              borderWidth: 1,
+              borderColor: COLORS.grey,
+              borderWidth: .5,
               marginTop: -1,
             }}
             onChangeText={text => this.setState({text})}
