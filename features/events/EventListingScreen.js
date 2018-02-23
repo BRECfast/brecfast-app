@@ -79,10 +79,10 @@ class EventListingScreen extends Component {
           )}
           <TouchableOpacity
             onPress={params.filter}
-            style={{marginRight: 10}}
+            style={{marginRight: 10, borderWidth: 1.5, borderColor: "#fff", borderRadius: 16, width: 32, height: 32, justifyContent: 'center', alignItems: 'center'}}
             hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
           >
-            <MaterialCommunityIcons name="filter" size={24} color="#fff" />
+            <MaterialCommunityIcons name="chevron-down" size={20} color="#fff" style={{marginTop: 3}} />
           </TouchableOpacity>
         </View>
       ),
