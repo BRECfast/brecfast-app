@@ -7,7 +7,7 @@ import {
   View,
   AsyncStorage,
 } from 'react-native';
-import {Constants, Segment} from 'expo';
+import {Constants, Segment, Location} from 'expo';
 import DropdownAlert from 'react-native-dropdownalert';
 import {ifIphoneX} from 'react-native-iphone-x-helper';
 import {ApolloClient} from 'apollo-client';
@@ -60,6 +60,7 @@ function getCurrentRoute(navigationState) {
 class App extends React.Component {
   state = {
     appState: AppState.currentState,
+    location: null,
   };
 
   componentWillMount() {
@@ -74,8 +75,13 @@ class App extends React.Component {
 
     this._refreshAppState();
     AppState.addEventListener('change', this._handleAppStateChange);
+    this._getLocation();
+  }
 
-    registerForLocation();
+  async _getLocation() {
+    await registerForLocation();
+    let location = await Location.getCurrentPositionAsync({});
+    this.setState({location});
   }
 
   componentWillUnmount() {
@@ -114,7 +120,7 @@ class App extends React.Component {
                       Segment.screen(currentScreen.routeName);
                     }
                   }}
-                  screenProps={{auth}}
+                  screenProps={{auth, location: this.state.location}}
                 />
               </View>
 

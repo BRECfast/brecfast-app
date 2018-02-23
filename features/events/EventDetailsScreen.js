@@ -129,7 +129,7 @@ class EventDetailsScreen extends Component {
                 }}
               >
                 <Image
-                  source={ASSETS[event.activity.id]}
+                  source={ASSETS[event.activity.id] || ASSETS.baseball}
                   style={{
                     width: 44,
                     height: 44,
@@ -284,9 +284,7 @@ const addEventData = graphql(
     options(props) {
       return {
         variables: {
-          // TODO: use param from navigation
-          // id: props.navigator.state.params.event.id,
-          id: 'cjdzk1e9qnarz01862j6egc9d',
+          id: props.navigation.state.params.eventId,
         },
       };
     },
