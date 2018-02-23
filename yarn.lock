@@ -5570,6 +5570,13 @@ react-native-branch@2.0.0-beta.3:
   version "2.0.0-beta.3"
   resolved "https://registry.yarnpkg.com/react-native-branch/-/react-native-branch-2.0.0-beta.3.tgz#2167af86bbc9f964bd45bd5f37684e5b54965e32"
 
+react-native-calendars@^1.17.2:
+  version "1.17.2"
+  resolved "https://registry.yarnpkg.com/react-native-calendars/-/react-native-calendars-1.17.2.tgz#45d3546cb19438661042cd3d0b7c7661477f30fc"
+  dependencies:
+    prop-types "^15.5.10"
+    xdate "^0.8.0"
+
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-dismiss-keyboard/-/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"
@@ -5641,12 +5648,6 @@ react-native-onboarding-component@^0.0.3:
     babel-plugin-flow-react-proptypes "^5.1.1"
     babel-preset-react-native-stage-0 "^1.0.1"
     prop-types "^15.5.8"
-
-react-native-safe-area-view@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.2.0.tgz#bda97f548e2ead4a90a06d95558647bc73434670"
-  dependencies:
-    hoist-non-react-statics "^2.3.1"
 
 react-native-safe-area-view@^0.7.0:
   version "0.7.0"
@@ -7272,6 +7273,10 @@ xcode@^0.9.1:
     pegjs "^0.10.0"
     simple-plist "^0.2.1"
     uuid "3.0.1"
+
+xdate@^0.8.0:
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/xdate/-/xdate-0.8.2.tgz#d7b033c00485d02695baf0044f4eacda3fc961a3"
 
 xdl@46.0.1:
   version "46.0.1"
