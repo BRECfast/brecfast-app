@@ -8,6 +8,9 @@ import {
 } from 'react-native';
 import {Location, MapView} from 'expo';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
+import SafeAreaView from 'react-native-safe-area-view';
+import SideSwipe from 'react-native-sideswipe';
+import Card from '../components/Card';
 
 const {width, height} = Dimensions.get('window');
 
@@ -91,6 +94,36 @@ class ParkMapScreen extends Component {
             ))}
           </MapView>
         )}
+        <SafeAreaView forceInset={{bottom: 'always'}}>
+          <SideSwipe
+            index={this.state.currentIndex}
+            itemWidth={width * 0.8}
+            style={{width}}
+            data={markers}
+            contentOffset={(width - width * 0.8) / 2}
+            onIndexChange={index =>
+              this.map.animateToCoordinate(
+                this.state.markers[index].coords,
+                300
+              )
+            }
+            renderItem={({itemIndex, currentIndex, item, animatedValue}) => (
+              <View style={{paddingHorizontal: 10}}>
+                <Card
+                  {...item}
+                  containerStyle={{
+                    width: width * 0.8 - 20,
+                    height: 100,
+                  }}
+                  title={item.id}
+                  index={itemIndex}
+                  currentIndex={currentIndex}
+                  animatedValue={animatedValue}
+                />
+              </View>
+            )}
+          />
+        </SafeAreaView>
       </View>
     );
   }
@@ -104,6 +137,11 @@ const styles = StyleSheet.create({
   },
   map: {
     ...StyleSheet.absoluteFillObject,
+  },
+  wrapper: {
+    height: 100,
+    width: '80%',
+    alignItems: 'center',
   },
 });
 
