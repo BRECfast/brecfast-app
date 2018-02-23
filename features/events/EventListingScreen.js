@@ -1,4 +1,4 @@
-import {STYLES, ASSETS} from '../../features/util/constants';
+import {STYLES, ASSETS, COLORS} from '../../features/util/constants';
 import React, {Component} from 'react';
 import {Alert, StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native';
 
@@ -176,9 +176,12 @@ class EventListingScreen extends Component {
             </Text>
           )}
         </View>
-        <View style={{width: 75, alignItems: 'flex-end'}}>
-          <Text>11:00 am</Text>
-          <Text>1 mile</Text>
+        <View style={{display: 'flex', height: '100%', width: 75, flexDirection: 'column', justifyContent: 'space-between'}}>
+          <Text style={[STYLES.textMuted, {width: '100%', textAlign: 'right'}]}>11:00 am</Text>
+          <Text style={[STYLES.textMuted, {width: '100%', textAlign: 'right'}]}>1 mile</Text>
+        </View>
+        <View>
+          <MaterialCommunityIcons name="chevron-right" size={18} color={COLORS.grey} />
         </View>
       </TouchableOpacity>
     );
