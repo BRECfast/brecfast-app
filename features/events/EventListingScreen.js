@@ -1,5 +1,6 @@
+import {STYLES, ASSETS} from '../../features/util/constants';
 import React, {Component} from 'react';
-import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Alert, StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native';
 
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import ActionButton from 'react-native-action-button';
@@ -32,7 +33,9 @@ async function fetchEvent(date) {
             latitude: 30.4583,
             longitude: 91.1403,
           },
-          activities: [],
+          activity: {
+            id: 'baseball'
+          },
           participations: [],
           minParticipants: 0,
           maxParticipants: 4,
@@ -135,6 +138,7 @@ class EventListingScreen extends Component {
   };
 
   _renderItem = item => {
+    let spotsRemaining = item.maxParticipants - item.participations.length;
     return (
       <TouchableOpacity
         style={styles.item}
@@ -145,24 +149,34 @@ class EventListingScreen extends Component {
       >
         <View
           style={{
-            width: 50,
-            height: 50,
-            backgroundColor: 'red',
-            marginRight: 5,
+            width: 44,
+            height: 44,
+            marginRight: 8,
           }}
-        />
+        >
+          <Image
+            source={ASSETS[item.activity.id]}
+            style={{
+              width:44,
+              height:44,
+            }}
+          />
+        </View>
         <View style={{flex: 1}}>
-          <Text>{item.name}</Text>
-          <Text>{item.name}</Text>
+          <Text style={{
+            fontWeight: 'bold',
+          }}>{item.name}</Text>
+          <Text style={[STYLES.textMuted]}>{item.name}</Text>
           {item.maxParticipants && (
-            <Text>
-              {item.maxParticipants - item.participations.length} spots
+            <Text style={[STYLES.textMuted, (spotsRemaining > 0 ? STYLES.textColorBlue : STYLES.textMuted)]}>
+              {spotsRemaining} spots
               remaining
             </Text>
           )}
         </View>
         <View style={{width: 75, alignItems: 'flex-end'}}>
           <Text>11:00 am</Text>
+          <Text>1 mile</Text>
         </View>
       </TouchableOpacity>
     );
@@ -250,6 +264,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 30,
   },
+  textMuted: {
+    color: '#8F8E94',
+  }
 });
 
 export default EventListingScreen;
