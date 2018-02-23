@@ -43,6 +43,7 @@ class CreateEventScreen extends Component {
   }
 
   _create = async () => {
+    const {goBack, state} = this.props.navigation;
     try {
       await this.props.createEvent({
         variables: {
@@ -53,7 +54,8 @@ class CreateEventScreen extends Component {
           maxParticipants: parseInt(this.state.maxParticipants, 10),
         },
       });
-      this.props.navigation.goBack();
+      state.params.refetch();
+      goBack();
     } catch (error) {
       alertWithType('error', 'Whoops', 'Something went wrong...');
     }
