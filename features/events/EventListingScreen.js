@@ -1,4 +1,4 @@
-import {STYLES, ASSETS, COLORS, getIcon} from '../../features/util/constants';
+import {STYLES, COLORS, getIcon} from '../../features/util/constants';
 import React, {Component} from 'react';
 import {
   Alert,
@@ -11,11 +11,14 @@ import {
 } from 'react-native';
 import {graphql} from 'react-apollo';
 import gql from 'graphql-tag';
+import sortBy from 'lodash/sortBy';
+import head from 'lodash/head';
 
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import ActionButton from 'react-native-action-button';
 import {Agenda} from 'react-native-calendars';
 import format from 'date-fns/format';
+import {parse} from 'date-fns';
 
 class EventListingScreen extends Component {
   static navigationOptions = ({navigation, screenProps}) => {
@@ -82,13 +85,25 @@ class EventListingScreen extends Component {
 
   state = {
     items: {},
-    fetchedMonths: {},
     selected: new Date(),
     monthName: format(new Date(), 'MMMM'),
   };
 
   componentWillMount() {
     this.props.navigation.setParams({filter: this._filter});
+  }
+
+  componentDidUpdate(prevProps) {
+    const {data} = this.props;
+    if (prevProps.data) {
+      const wasLoading = prevProps.data.loading;
+      const isLoading = data.loading;
+      if (wasLoading && !isLoading) {
+        this.agenda.chooseDay(
+          parse(head(sortBy(data.events, [x => +parse(x.time)])).time)
+        );
+      }
+    }
   }
 
   _filter = () => {
@@ -234,6 +249,9 @@ class EventListingScreen extends Component {
           renderItem={this._renderItem}
           renderEmptyDate={this._renderEmptyDate}
           rowHasChanged={this._rowHasChanged}
+          ref={ref => {
+            this.agenda = ref;
+          }}
         />
         <ActionButton
           buttonColor="rgba(231,76,60,1)"
