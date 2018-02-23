@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {Text, View} from 'react-native';
+import {Button, ScrollView, Text, TextInput, View} from 'react-native';
 
 import AuthenticatedActionButton from '../user/AuthenticatedActionButton';
+import ModalSelector from '../components/ModalSelector';
 
 class CreateEventScreen extends Component {
   static navigationOptions = {
@@ -9,15 +10,16 @@ class CreateEventScreen extends Component {
   };
 
   state = {
-    user: null,
+    user: {},
+    text: '',
   };
 
   render() {
     return (
-      <View
+      <ScrollView
         style={{
           flex: 1,
-          justifyContent: 'center',
+          backgroundColor: '#FFF',
         }}
       >
         <AuthenticatedActionButton
@@ -26,9 +28,66 @@ class CreateEventScreen extends Component {
             this.setState({user: true});
           }}
         >
-          <Text style={{textAlign: 'center'}}>Create Event UI</Text>
+          <View style={{paddingHorizontal: 20}}>
+            <View style={{marginTop: 10}}>
+              <Text>Activity</Text>
+              <TextInput
+                style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+                onChangeText={text => this.setState({text})}
+                value={this.state.text}
+              />
+            </View>
+            <View style={{marginTop: 10}}>
+              <ModalSelector
+                title="Locations"
+                items={[{title: 'Foo'}]}
+                renderItem={item => <View />}
+                onSelect={item => {
+                  console.log(item); // null for cancel
+                }}
+              >
+                {({show}) => <Button title="Location" onPress={show} />}
+              </ModalSelector>
+            </View>
+            <View style={{marginTop: 10}}>
+              <Text>Starts</Text>
+              <TextInput
+                style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+                onChangeText={text => this.setState({text})}
+                value={this.state.text}
+              />
+            </View>
+            <View style={{marginTop: 10}}>
+              <Text>Min # of Participants</Text>
+              <TextInput
+                style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+                onChangeText={text => this.setState({text})}
+                value={this.state.text}
+              />
+            </View>
+            <View style={{marginTop: 10}}>
+              <Text>Max # of Participants</Text>
+              <TextInput
+                style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+                onChangeText={text => this.setState({text})}
+                value={this.state.text}
+              />
+            </View>
+            <View style={{marginTop: 10}}>
+              <ModalSelector
+                title="Invitees"
+                items={[{title: 'Stephen'}]}
+                renderItem={item => <View />}
+                onSelect={item => {
+                  console.log(item); // null for cancel
+                }}
+              >
+                {({show}) => <Button title="Invitees" onPress={show} />}
+              </ModalSelector>
+            </View>
+          </View>
         </AuthenticatedActionButton>
-      </View>
+      </ScrollView>
     );
   }
 }

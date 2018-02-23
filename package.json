@@ -23,6 +23,7 @@
     "react-native-action-button": "^2.8.4",
     "react-native-calendars": "^1.17.2",
     "react-native-dropdownalert": "^3.1.2",
+    "react-native-elements": "^0.19.0",
     "react-native-iphone-x-helper": "^1.0.2",
     "react-native-keyboard-aware-scroll-view": "^0.4.1",
     "react-native-keyboard-spacer": "^0.4.1",
