@@ -3,8 +3,10 @@ import {Button, Image, Text, TextInput, View} from 'react-native';
 import Card from '../components/Card';
 import ListItem from '../components/ListItem';
 import md5 from 'md5';
-import {graphql} from 'react-apollo';
+import {graphql, compose} from 'react-apollo';
 import gql from 'graphql-tag';
+import {TagSelect} from 'react-native-tag-select';
+import Loading from '../components/LoadIng';
 
 class MyProfileScreen extends Component {
   static navigationOptions = ({navigation}) => {
@@ -52,8 +54,13 @@ class MyProfileScreen extends Component {
 
   _update = async () => {
     const {auth: {reauthenticate}} = this.props.screenProps;
-
-    await this.props.updateUser({variables: this.state.editUser});
+    const interestsIds = Object.keys(this.tag.state.value);
+    await this.props.updateUser({
+      variables: {
+        ...this.state.editUser,
+        interestsIds,
+      },
+    });
     await reauthenticate();
 
     this.setState({editUser: null});
@@ -61,7 +68,10 @@ class MyProfileScreen extends Component {
   };
 
   render() {
-    const {auth: {currentUser}} = this.props.screenProps;
+    const {
+      screenProps: {auth: {currentUser}},
+      data: {allActivities, loading},
+    } = this.props;
     const {editUser} = this.state;
     return (
       <View
@@ -69,6 +79,7 @@ class MyProfileScreen extends Component {
           flex: 1,
         }}
       >
+        <Loading visible={loading} />
         <View
           style={{
             flexDirection: 'row',
@@ -154,21 +165,57 @@ class MyProfileScreen extends Component {
             last
           />
         </Card>
+        <Text style={{marginTop: 20, color: '#888'}}>INTERESTS</Text>
+        <Card>
+          <TagSelect
+            value={currentUser.interests}
+            data={allActivities}
+            labelAttr="name"
+            ref={tag => {
+              this.tag = tag;
+            }}
+          />
+        </Card>
       </View>
     );
   }
 }
 
-export default graphql(
-  gql`
-    mutation updateUser($id: ID!, $name: String!, $email: String!) {
-      updateUser(id: $id, name: $name, email: $email) {
-        id
-        name
-        email
-        deviceId
+export default compose(
+  graphql(
+    gql`
+      {
+        allActivities {
+          id
+          name
+        }
       }
-    }
-  `,
-  {name: 'updateUser'}
+    `
+  ),
+  graphql(
+    gql`
+      mutation updateUser(
+        $id: ID!
+        $name: String!
+        $email: String!
+        $interestsIds: [ID!]!
+      ) {
+        updateUser(
+          id: $id
+          name: $name
+          email: $email
+          interestsIds: $interestsIds
+        ) {
+          id
+          name
+          email
+          deviceId
+          interests {
+            id
+          }
+        }
+      }
+    `,
+    {name: 'updateUser'}
+  )
 )(MyProfileScreen);

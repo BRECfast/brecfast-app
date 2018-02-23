@@ -1,49 +1,21 @@
 import {STYLES, ASSETS, COLORS, getIcon} from '../../features/util/constants';
 import React, {Component} from 'react';
-import {Alert, StyleSheet, Text, TouchableOpacity, View, Image, StatusBar} from 'react-native';
+import {
+  Alert,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+  StatusBar,
+} from 'react-native';
+import {graphql} from 'react-apollo';
+import gql from 'graphql-tag';
 
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import ActionButton from 'react-native-action-button';
 import {Agenda} from 'react-native-calendars';
 import format from 'date-fns/format';
-import getDaysInMonth from 'date-fns/get_days_in_month';
-import startOfMonth from 'date-fns/start_of_month';
-import addDays from 'date-fns/add_days';
-import addMonths from 'date-fns/add_months';
-
-async function fetchEvent(date) {
-  const monthStart = startOfMonth(date);
-  const daysToFetch = getDaysInMonth(date);
-  return Array.from({
-    length: daysToFetch,
-  }).reduce((acc, item, idx) => {
-    const itemDate = addDays(monthStart, idx);
-    const key = format(itemDate, 'YYYY-MM-DD');
-    return {
-      ...acc,
-      [key]: [
-        {
-          id: 1,
-          name: 'Some Event',
-          time: itemDate,
-          status: 'PENDING',
-          park: {
-            name: 'BREC Park Yo',
-            classification: 'COMMUNITY',
-            latitude: 30.4583,
-            longitude: 91.1403,
-          },
-          activity: {
-            id: 'baseball',
-          },
-          participations: [],
-          minParticipants: 0,
-          maxParticipants: 4,
-        },
-      ],
-    };
-  }, {});
-}
 
 class EventListingScreen extends Component {
   static navigationOptions = ({navigation, screenProps}) => {
@@ -52,7 +24,12 @@ class EventListingScreen extends Component {
     return {
       headerTintColor: '#fff',
       headerStyle: {backgroundColor: '#556535'},
-      headerTitle: <Image source={require('../../assets/brand.png')} style={{height: 44, width: 157, resizeMode: 'contain' }} />,
+      headerTitle: (
+        <Image
+          source={require('../../assets/brand.png')}
+          style={{height: 44, width: 157, resizeMode: 'contain'}}
+        />
+      ),
       headerLeft: (
         <TouchableOpacity
           onPress={() => navigation.navigate('ParkMap')}
@@ -79,10 +56,24 @@ class EventListingScreen extends Component {
           )}
           <TouchableOpacity
             onPress={params.filter}
-            style={{marginRight: 10, borderWidth: 1.5, borderColor: "#fff", borderRadius: 16, width: 32, height: 32, justifyContent: 'center', alignItems: 'center'}}
+            style={{
+              marginRight: 10,
+              borderWidth: 1.5,
+              borderColor: '#fff',
+              borderRadius: 16,
+              width: 32,
+              height: 32,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
             hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
           >
-            <MaterialCommunityIcons name="chevron-down" size={20} color="#fff" style={{marginTop: 3}} />
+            <MaterialCommunityIcons
+              name="chevron-down"
+              size={20}
+              color="#fff"
+              style={{marginTop: 3}}
+            />
           </TouchableOpacity>
         </View>
       ),
@@ -100,55 +91,36 @@ class EventListingScreen extends Component {
     this.props.navigation.setParams({filter: this._filter});
   }
 
-  async _fetchEvents(date) {
-    if (this.state.fetchedMonths[format(date, 'YYYY-MM-DD')]) {
-      return;
-    }
-    this.setState(
-      state => ({
-        fetchedMonths: {
-          ...state.fetchedMonths,
-          [format(date, 'YYYY-MM-DD')]: true,
-        },
-      }),
-      async () => {
-        const newItems = await fetchEvent(date);
-        this.setState(state => ({
-          items: {
-            ...state.items,
-            ...newItems,
-          },
-        }));
-      }
-    );
-  }
-
   _filter = () => {
     Alert.alert('show filter');
   };
 
-  _loadItems = day => {
-    const monthStart = startOfMonth(day.dateString);
-    [addMonths(monthStart, -1), monthStart, addMonths(monthStart, 1)].forEach(
-      date => {
-        this._fetchEvents(date);
-      }
-    );
-  };
-
   _onDayChange = day => {
-    this._loadItems(day);
     this.setState({monthName: format(day.dateString, 'MMMM')});
   };
 
+  _renderSpots({minParticipants, maxParticipants, participantsCount}) {
+    if (maxParticipants && participantsCount >= maxParticipants) {
+      return <Text style={[STYLES.textMuted]}>Not spots available</Text>;
+    }
+    if (participantsCount < minParticipants) {
+      return (
+        <Text style={[STYLES.textColorBlue]}>
+          {minParticipants - participantsCount} spots remaining
+        </Text>
+      );
+    }
+    return <Text style={[STYLES.textMuted]}>We could use more!</Text>;
+  }
+
   _renderItem = item => {
-    let spotsRemaining = item.maxParticipants - item.participations.length;
+    let spotsRemaining = item.maxParticipants - item.participationsCount;
     return (
       <TouchableOpacity
         style={styles.item}
         activeOpacity={0.5}
         onPress={() =>
-          this.props.navigation.navigate('EventDetails', {event: item})
+          this.props.navigation.navigate('EventDetails', {eventId: item.id})
         }
       >
         <View
@@ -159,31 +131,46 @@ class EventListingScreen extends Component {
           }}
         >
           <Image
-            source={getIcon(item.activity.id)}
+            source={getIcon(item.activityId)}
             style={{
-              width:44,
-              height:44,
+              width: 44,
+              height: 44,
             }}
           />
         </View>
         <View style={{flex: 1}}>
-          <Text style={{
-            fontWeight: 'bold',
-          }}>{item.name}</Text>
-          <Text style={[STYLES.textMuted]}>{item.name}</Text>
-          {item.maxParticipants && (
-            <Text style={[STYLES.textMuted, (spotsRemaining > 0 ? STYLES.textColorBlue : STYLES.textMuted)]}>
-              {spotsRemaining} spots
-              remaining
-            </Text>
-          )}
+          <Text
+            style={{
+              fontWeight: 'bold',
+            }}
+          >
+            {item.activityName}
+          </Text>
+          <Text style={[STYLES.textMuted]}>{item.parkName}</Text>
+          {this._renderSpots(item)}
         </View>
-        <View style={{display: 'flex', height: '100%', width: 75, flexDirection: 'column', justifyContent: 'space-between'}}>
-          <Text style={[STYLES.textMuted, {width: '100%', textAlign: 'right'}]}>11:00 am</Text>
-          <Text style={[STYLES.textMuted, {width: '100%', textAlign: 'right'}]}>1 mile</Text>
+        <View
+          style={{
+            display: 'flex',
+            height: '100%',
+            width: 75,
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Text style={[STYLES.textMuted, {width: '100%', textAlign: 'right'}]}>
+            {format(item.time, 'h:mm a')}
+          </Text>
+          <Text style={[STYLES.textMuted, {width: '100%', textAlign: 'right'}]}>
+            {(item._geoDistance * 0.000621371).toFixed(1)} miles
+          </Text>
         </View>
         <View>
-          <MaterialCommunityIcons name="chevron-right" size={18} color={COLORS.grey} />
+          <MaterialCommunityIcons
+            name="chevron-right"
+            size={18}
+            color={COLORS.grey}
+          />
         </View>
       </TouchableOpacity>
     );
@@ -192,7 +179,7 @@ class EventListingScreen extends Component {
   _renderEmptyDate = () => {
     return (
       <View style={styles.emptyDate}>
-        <Text>This is empty date!</Text>
+        <Text />
       </View>
     );
   };
@@ -200,6 +187,21 @@ class EventListingScreen extends Component {
   _rowHasChanged = (r1, r2) => {
     return r1.name !== r2.name;
   };
+
+  _getEventsForAgenda() {
+    const {events} = this.props.data || {};
+    if (events == null) {
+      return {};
+    }
+    return events.reduce((acc, event) => {
+      const key = format(event.time, 'YYYY-MM-DD');
+      if (acc[key] == null) {
+        acc[key] = [];
+      }
+      acc[key].push(event);
+      return acc;
+    }, {});
+  }
 
   render() {
     return (
@@ -223,9 +225,8 @@ class EventListingScreen extends Component {
           </Text>
         </View>
         <Agenda
-          items={this.state.items}
+          items={this._getEventsForAgenda()}
           selected={this.state.selected}
-          loadItemsForMonth={this._loadItems}
           onDayChange={this._onDayChange}
           onCalendarToggled={calendarOpened => {
             this.setState({hideMonth: calendarOpened});
@@ -274,7 +275,43 @@ const styles = StyleSheet.create({
   },
   textMuted: {
     color: '#8F8E94',
-  }
+  },
 });
 
-export default EventListingScreen;
+const addEventsData = graphql(
+  gql`
+    query searchEvents($latitude: Float!, $longitude: Float!, $now: DateTime!) {
+      events: searchEvents(
+        latitude: $latitude
+        longitude: $longitude
+        time_gte: $now
+      ) {
+        id
+        time
+        activityId
+        activityName
+        parkName
+        minParticipants
+        maxParticipants
+        participantsCount
+        _geoDistance
+      }
+    }
+  `,
+  {
+    options({screenProps: {location}}) {
+      if (!location) {
+        return {skip: true};
+      }
+      return {
+        variables: {
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+          now: new Date().toISOString(),
+        },
+      };
+    },
+  }
+);
+
+export default addEventsData(EventListingScreen);
