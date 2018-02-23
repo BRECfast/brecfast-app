@@ -3,6 +3,10 @@ import {AppState, Platform, StatusBar, StyleSheet, View} from 'react-native';
 import {Constants, Segment} from 'expo';
 import DropdownAlert from 'react-native-dropdownalert';
 import {ifIphoneX} from 'react-native-iphone-x-helper';
+import {ApolloClient} from 'apollo-client';
+import {HttpLink} from 'apollo-link-http';
+import {InMemoryCache} from 'apollo-cache-inmemory';
+import {ApolloProvider} from 'react-apollo';
 
 import './features/util/reactotron';
 
@@ -10,6 +14,12 @@ import {SEGMENT_IOS_KEY, SEGMENT_ANDROID_KEY} from './features/util/constants';
 import Navigator from './features/navigation/Navigator';
 import {registerDropdown} from './features/alerts/service';
 import {registerForLocation} from './features/permissions/index';
+
+// Replace http://my-api.graphql.com with your GraphQL API’s URL.
+const client = new ApolloClient({
+  link: new HttpLink({uri: 'https://api.graph.cool/simple/v1/brecfast'}),
+  cache: new InMemoryCache(),
+});
 
 // gets the current screen from navigation state
 function getCurrentRoute(navigationState) {
@@ -66,26 +76,28 @@ class App extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <ApolloProvider client={client}>
         <View style={styles.container}>
-          <StatusBar barStyle="dark-content" />
-          <Navigator
-            onNavigationStateChange={(prevState, currentState) => {
-              const currentScreen = getCurrentRoute(currentState);
-              const prevScreen = getCurrentRoute(prevState);
+          <View style={styles.container}>
+            <StatusBar barStyle="dark-content" />
+            <Navigator
+              onNavigationStateChange={(prevState, currentState) => {
+                const currentScreen = getCurrentRoute(currentState);
+                const prevScreen = getCurrentRoute(prevState);
 
-              if (prevScreen !== currentScreen) {
-                Segment.screen(currentScreen.routeName);
-              }
-            }}
+                if (prevScreen !== currentScreen) {
+                  Segment.screen(currentScreen.routeName);
+                }
+              }}
+            />
+          </View>
+
+          <DropdownAlert
+            ref={ref => registerDropdown(ref)}
+            defaultContainer={styles.dropdownAlert}
           />
         </View>
-
-        <DropdownAlert
-          ref={ref => registerDropdown(ref)}
-          defaultContainer={styles.dropdownAlert}
-        />
-      </View>
+      </ApolloProvider>
     );
   }
 }

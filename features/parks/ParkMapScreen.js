@@ -10,6 +10,9 @@ import {Location, MapView} from 'expo';
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import SafeAreaView from 'react-native-safe-area-view';
 import SideSwipe from 'react-native-sideswipe';
+import {graphql} from 'react-apollo';
+import gql from 'graphql-tag';
+
 import Card from '../components/Card';
 
 const {width, height} = Dimensions.get('window');
@@ -38,29 +41,14 @@ class ParkMapScreen extends Component {
 
   state = {
     location: null,
-    markers: [
-      {
-        id: 'Park 1',
-        coords: {
-          latitude: 30.4583,
-          longitude: -91.1403,
-        },
-      },
-    ],
   };
 
   async componentWillMount() {
     this.props.navigation.setParams({filter: this._filter});
     let location = await Location.getCurrentPositionAsync({});
-    this.setState(
-      state => ({
-        location,
-        markers: [...state.markers, {id: 'me', coords: location.coords}],
-      }),
-      () => {
-        this.map.fitToSuppliedMarkers(this.state.markers.map(x => x.id), true);
-      }
-    );
+    this.setState({
+      location,
+    });
   }
 
   _filter = () => {
@@ -68,32 +56,42 @@ class ParkMapScreen extends Component {
   };
 
   render() {
-    const {location, markers} = this.state;
+    const {location} = this.state;
+    const {data: {loading, allParks}} = this.props;
+    const markers = (allParks || []).map(x => ({
+      id: x.id,
+      name: x.name,
+      coords: {
+        latitude: x.latitude,
+        longitude: x.longitude,
+      },
+    }));
     return (
       <View style={styles.container}>
-        {location && (
-          <MapView
-            provider={this.props.provider}
-            ref={ref => {
-              this.map = ref;
-            }}
-            style={styles.map}
-            initialRegion={{
-              latitude: location.coords.latitude,
-              longitude: location.coords.longitude,
-              latitudeDelta: LATITUDE_DELTA,
-              longitudeDelta: LONGITUDE_DELTA,
-            }}
-          >
-            {markers.map(x => (
-              <MapView.Marker
-                key={x.id}
-                identifier={x.id}
-                coordinate={x.coords}
-              />
-            ))}
-          </MapView>
-        )}
+        {!loading &&
+          location && (
+            <MapView
+              provider={this.props.provider}
+              ref={ref => {
+                this.map = ref;
+              }}
+              style={styles.map}
+              initialRegion={{
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+                latitudeDelta: LATITUDE_DELTA,
+                longitudeDelta: LONGITUDE_DELTA,
+              }}
+            >
+              {markers.map(x => (
+                <MapView.Marker
+                  key={x.id}
+                  identifier={x.id}
+                  coordinate={x.coords}
+                />
+              ))}
+            </MapView>
+          )}
         <SafeAreaView forceInset={{bottom: 'always'}}>
           <SideSwipe
             index={this.state.currentIndex}
@@ -102,10 +100,7 @@ class ParkMapScreen extends Component {
             data={markers}
             contentOffset={(width - width * 0.8) / 2}
             onIndexChange={index =>
-              this.map.animateToCoordinate(
-                this.state.markers[index].coords,
-                300
-              )
+              this.map.animateToCoordinate(markers[index].coords, 300)
             }
             renderItem={({itemIndex, currentIndex, item, animatedValue}) => (
               <View style={{paddingHorizontal: 10}}>
@@ -145,4 +140,13 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ParkMapScreen;
+export default graphql(gql`
+  {
+    allParks {
+      id
+      name
+      latitude
+      longitude
+    }
+  }
+`)(ParkMapScreen);
