@@ -1,6 +1,6 @@
 import {STYLES, ASSETS, COLORS} from '../../features/util/constants';
 import React, {Component} from 'react';
-import {Alert, StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native';
+import {Alert, StyleSheet, Text, TouchableOpacity, View, Image, StatusBar} from 'react-native';
 
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import ActionButton from 'react-native-action-button';
@@ -50,14 +50,16 @@ class EventListingScreen extends Component {
     const params = navigation.state.params || {};
 
     return {
-      title: 'Events',
+      headerTintColor: '#fff',
+      headerStyle: {backgroundColor: '#556535'},
+      headerTitle: <Image source={require('../../assets/brand.png')} style={{height: 44, width: 157, resizeMode: 'contain' }} />,
       headerLeft: (
         <TouchableOpacity
           onPress={() => navigation.navigate('ParkMap')}
           style={{marginLeft: 10}}
           hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
         >
-          <MaterialCommunityIcons name="map" size={24} color="#888" />
+          <MaterialCommunityIcons name="map" size={24} color="#fff" />
         </TouchableOpacity>
       ),
       headerRight: !!params.filter && (
@@ -71,7 +73,7 @@ class EventListingScreen extends Component {
               <MaterialCommunityIcons
                 name="account-edit"
                 size={28}
-                color="#888"
+                color="#fff"
               />
             </TouchableOpacity>
           )}
@@ -80,7 +82,7 @@ class EventListingScreen extends Component {
             style={{marginRight: 10}}
             hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
           >
-            <MaterialCommunityIcons name="filter" size={24} color="#888" />
+            <MaterialCommunityIcons name="filter" size={24} color="#fff" />
           </TouchableOpacity>
         </View>
       ),
@@ -202,6 +204,7 @@ class EventListingScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <StatusBar barStyle="light-content" />
         <View style={{backgroundColor: '#FFF'}}>
           <Text
             style={[
