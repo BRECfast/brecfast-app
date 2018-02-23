@@ -41,4 +41,9 @@ export const COLORS = {
 }
 export const ASSETS = {
   'baseball': require('../../assets/icon/baseball.png'),
+  'basketball': require('../../assets/icon/basketball.png'),
+  'pennant': require('../../assets/icon/pennant.png'),
+};
+export function getIcon(key) {
+  return ASSETS[key] || ASSETS['pennant'];
 };
