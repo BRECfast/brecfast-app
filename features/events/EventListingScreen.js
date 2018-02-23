@@ -43,7 +43,7 @@ async function fetchEvent(date) {
 }
 
 class EventListingScreen extends Component {
-  static navigationOptions = ({navigation}) => {
+  static navigationOptions = ({navigation, screenProps}) => {
     const params = navigation.state.params || {};
 
     return {
@@ -64,11 +64,13 @@ class EventListingScreen extends Component {
             style={{marginRight: 10}}
             hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
           >
-            <MaterialCommunityIcons
-              name="account-edit"
-              size={28}
-              color="#888"
-            />
+            {screenProps.auth.currentUser && (
+              <MaterialCommunityIcons
+                name="account-edit"
+                size={28}
+                color="#888"
+              />
+            )}
           </TouchableOpacity>
           <TouchableOpacity
             onPress={params.filter}
