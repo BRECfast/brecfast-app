@@ -46,7 +46,7 @@ async function fetchEvent(date) {
 }
 
 class EventListingScreen extends Component {
-  static navigationOptions = ({navigation}) => {
+  static navigationOptions = ({navigation, screenProps}) => {
     const params = navigation.state.params || {};
 
     return {
@@ -62,17 +62,19 @@ class EventListingScreen extends Component {
       ),
       headerRight: !!params.filter && (
         <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('MyProfile')}
-            style={{marginRight: 10}}
-            hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
-          >
-            <MaterialCommunityIcons
-              name="account-edit"
-              size={28}
-              color="#888"
-            />
-          </TouchableOpacity>
+          {screenProps.auth.currentUser && (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('MyProfile')}
+              style={{marginRight: 10}}
+              hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+            >
+              <MaterialCommunityIcons
+                name="account-edit"
+                size={28}
+                color="#888"
+              />
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             onPress={params.filter}
             style={{marginRight: 10}}
@@ -142,7 +144,7 @@ class EventListingScreen extends Component {
     return (
       <TouchableOpacity
         style={styles.item}
-        activeOpacity={0.8}
+        activeOpacity={0.5}
         onPress={() =>
           this.props.navigation.navigate('EventDetails', {event: item})
         }

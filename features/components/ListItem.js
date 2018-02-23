@@ -21,10 +21,12 @@ const ListItem = ({last, content, control, loading, onPress, style}) => {
       {...buttonProps}
     >
       <View style={{flex: 1, justifyContent: 'center'}}>{content}</View>
-      <View style={{justifyContent: 'center'}}>
-        {control}
-        {loading && <ControlLoader />}
-      </View>
+      {control && (
+        <View style={{justifyContent: 'center'}}>
+          {control}
+          {loading && <ControlLoader />}
+        </View>
+      )}
     </Wrapper>
   );
 };
