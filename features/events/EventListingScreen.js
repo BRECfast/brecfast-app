@@ -59,19 +59,19 @@ class EventListingScreen extends Component {
       ),
       headerRight: !!params.filter && (
         <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('MyProfile')}
-            style={{marginRight: 10}}
-            hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
-          >
-            {screenProps.auth.currentUser && (
+          {screenProps.auth.currentUser && (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('MyProfile')}
+              style={{marginRight: 10}}
+              hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+            >
               <MaterialCommunityIcons
                 name="account-edit"
                 size={28}
                 color="#888"
               />
-            )}
-          </TouchableOpacity>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             onPress={params.filter}
             style={{marginRight: 10}}
