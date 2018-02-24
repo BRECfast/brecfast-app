@@ -11,7 +11,7 @@ class CreateUserScreen extends Component {
       variables: {
         name: 'Boaty McBoat Face',
         email: `${Constants.deviceId}@BRECfast.com`,
-        deviceId: '123',
+        deviceId: Constants.deviceId,
       },
     });
     await reauthenticate();

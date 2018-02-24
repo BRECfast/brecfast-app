@@ -95,6 +95,11 @@ class UserProvider extends Component {
       });
       return response.data.authenticate.token;
     } catch (error) {
+      this.setState({
+        authenticating: false,
+        authToken: null,
+        currentUser: null,
+      });
       alertWithType('error', 'Whoops', error.message);
       return null;
     }
