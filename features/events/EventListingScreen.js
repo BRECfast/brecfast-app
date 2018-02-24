@@ -116,12 +116,12 @@ class EventListingScreen extends Component {
 
   _renderSpots({minParticipants, maxParticipants, participantsCount}) {
     if (maxParticipants && participantsCount >= maxParticipants) {
-      return <Text style={[STYLES.textMuted]}>Not spots available</Text>;
+      return <Text style={[STYLES.textMuted]}>No spots available</Text>;
     }
     if (participantsCount < minParticipants) {
       return (
         <Text style={[STYLES.textColorBlue]}>
-          {minParticipants - participantsCount} spots remaining
+          {minParticipants - participantsCount} spot{(minParticipants - participantsCount) > 1 ? 's' : ''} remaining
         </Text>
       );
     }
