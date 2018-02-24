@@ -13,6 +13,7 @@ import {graphql} from 'react-apollo';
 import gql from 'graphql-tag';
 import sortBy from 'lodash/sortBy';
 import head from 'lodash/head';
+import last from 'lodash/last';
 
 import {MaterialCommunityIcons} from '@expo/vector-icons';
 import ActionButton from 'react-native-action-button';
@@ -129,10 +130,14 @@ class EventListingScreen extends Component {
   }
 
   _renderItem = item => {
-    // let spotsRemaining = item.maxParticipants - item.participationsCount;
+    const {events = []} = this.props.data || {};
+    const lastEvent = last(sortBy(events, [x => +parse(x.time)]));
     return (
       <TouchableOpacity
-        style={styles.item}
+        style={[
+          styles.item,
+          lastEvent.id === item.id ? {marginBottom: 100} : null,
+        ]}
         activeOpacity={0.5}
         onPress={() =>
           this.props.navigation.navigate('EventDetails', {eventId: item.id})
@@ -256,7 +261,7 @@ class EventListingScreen extends Component {
             selectedDayBackgroundColor: COLORS.blue,
             todayTextColor: COLORS.blue,
             dotColor: COLORS.blue,
-            agendaTodayColor: '#000'
+            agendaTodayColor: '#000',
           }}
         />
         <ActionButton
