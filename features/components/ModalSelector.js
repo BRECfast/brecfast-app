@@ -58,8 +58,12 @@ class ModalSelector extends Component {
           <ScrollView styles={{flex: 1}}>
             <SafeAreaView forceInset={{top: 'never', bottom: 'always'}}>
               <List containerStyle={{marginTop: 0}}>
-                {this.props.items.map((item, i) => (
-                  <ListItem
+                {this.props.items.map((item, i) => {
+                  const iconProps = this.props.showIcons ? {
+                    avatar:getIcon(item.id),
+                    avatarStyle:{ backgroundColor: '#fff' },
+                  } : {}
+                  return <ListItem
                     key={i}
                     title={item.title}
                     subtitle={item.subtitle}
@@ -67,8 +71,9 @@ class ModalSelector extends Component {
                       this.props.onSelect(item);
                       this.setState({show: false});
                     }}
+                    {...iconProps}
                   />
-                ))}
+                })}
               </List>
             </SafeAreaView>
           </ScrollView>

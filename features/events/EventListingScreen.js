@@ -252,6 +252,12 @@ class EventListingScreen extends Component {
           ref={ref => {
             this.agenda = ref;
           }}
+          theme={{
+            selectedDayBackgroundColor: COLORS.blue,
+            todayTextColor: COLORS.blue,
+            dotColor: COLORS.blue,
+            agendaTodayColor: '#000'
+          }}
         />
         <ActionButton
           buttonColor="rgba(231,76,60,1)"
