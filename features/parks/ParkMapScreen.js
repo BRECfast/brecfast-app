@@ -39,10 +39,24 @@ class ParkMapScreen extends Component {
       headerRight: !!params.filter && (
         <TouchableOpacity
           onPress={params.filter}
-          style={{marginRight: 10, borderWidth: 1.5, borderColor: "#fff", borderRadius: 16, width: 32, height: 32, justifyContent: 'center', alignItems: 'center'}}
+          style={{
+            marginRight: 10,
+            borderWidth: 1.5,
+            borderColor: '#fff',
+            borderRadius: 16,
+            width: 32,
+            height: 32,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
           hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
         >
-          <MaterialCommunityIcons name="chevron-down" size={20} color="#fff" style={{marginTop: 3}} />
+          <MaterialCommunityIcons
+            name="chevron-down"
+            size={20}
+            color="#fff"
+            style={{marginTop: 3}}
+          />
         </TouchableOpacity>
       ),
     };
@@ -127,7 +141,6 @@ class ParkMapScreen extends Component {
                     marginTop: 12,
                     marginBottom: 16,
                   }}
-
                   index={itemIndex}
                   currentIndex={currentIndex}
                   animatedValue={animatedValue}
@@ -135,22 +148,36 @@ class ParkMapScreen extends Component {
                     flexDirection: 'row',
                   }}
                 >
-                  <View style={{ flex: 1 }}>
-                    <Text style={{ fontWeight: 'bold' }}>{item.name}</Text>
+                  <View style={{flex: 1}}>
+                    <Text style={{fontWeight: 'bold'}}>{item.name}</Text>
                     <Text>{item.address}</Text>
-                    <Text>{item.city}, LA {item.zipcode}</Text>
-                    <Text style={{fontWeight: 'bold', marginTop: 8}}>Available Activities</Text>
-                    <View style={{ width: '100%', flexDirection: 'row' }}>
-                      {item.activities.map(activity => <Image key={activity.id} source={getIcon(activity.id)} style={{
-                          height: 16,
-                          width: 16,
-                          marginRight: 8,
-                        }} />)}
+                    <Text>
+                      {item.city}, LA {item.zipcode}
+                    </Text>
+                    <Text style={{fontWeight: 'bold', marginTop: 8}}>
+                      Available Activities
+                    </Text>
+                    <View style={{width: '100%', flexDirection: 'row'}}>
+                      {item.activities.map(activity => (
+                        <Image
+                          key={activity.id}
+                          source={getIcon(activity.id)}
+                          style={{
+                            height: 16,
+                            width: 16,
+                            marginRight: 8,
+                          }}
+                        />
+                      ))}
                     </View>
                     {/* <Text>{JSON.stringify(item, null, 2)}</Text> */}
                   </View>
-                  <View style={{width: 18 }}>
-                    <MaterialCommunityIcons name="chevron-right" size={18} color={COLORS.grey} />
+                  <View style={{width: 18}}>
+                    <MaterialCommunityIcons
+                      name="chevron-right"
+                      size={18}
+                      color={COLORS.grey}
+                    />
                   </View>
                 </Card>
               </View>

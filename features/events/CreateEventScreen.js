@@ -178,9 +178,10 @@ class CreateEventScreen extends Component {
                   </View>
                   <View style={{flex: 1}}>
                     <Text style={{textAlign: 'right', color: '#444'}}>
-                      {format(this.state.date, 'ddd, MMM DD')}
+                      {format(this.state.date, 'ddd, MMM DD hh:mm a')}
                     </Text>
                     <DateTimePicker
+                      mode="datetime"
                       isVisible={this.state.datePickerVisible}
                       date={this.state.date}
                       confirmTextIOS="Ok"
