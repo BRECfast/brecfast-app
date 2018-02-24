@@ -2,18 +2,18 @@ DO IT: https://expo.io/@elevator3/brecfast-app
 
 # Screenshots
 
-![](assets/screenshots/01-events.PNG)
+<img src="assets/screenshots/01-events.PNG" width="600" />
 
 View events at BREC parks
 
-![](assets/screenshots/02-event.PNG)
+<img src="assets/screenshots/02-event.PNG" width="600" />
 
 Join fun loving folks for exciting activities
 
-![](assets/screenshots/03-create-event.PNG)
+<img src="assets/screenshots/03-create-event.PNG" width="600" />
 
 Create events for other fun loving folks to participate in
 
-![](assets/screenshots/04-parks.PNG)
+<img src="assets/screenshots/04-parks.PNG" width="600" />
 
 Find out what activities are available at BREC parks
