@@ -23,6 +23,8 @@ import {SEGMENT_IOS_KEY, SEGMENT_ANDROID_KEY} from './features/util/constants';
 import Navigator from './features/navigation/Navigator';
 import {registerDropdown} from './features/alerts/service';
 import {registerForLocation} from './features/permissions/index';
+import Loading from './features/components/LoadIng';
+import CreateUserScreen from './features/components/CreateUserScreen';
 
 const authLink = setContext(async (_, {headers}) => {
   const authToken = await AsyncStorage.getItem('authToken');
@@ -107,29 +109,37 @@ class App extends React.Component {
     return (
       <ApolloProvider client={client}>
         <AuthProvider>
-          {auth => (
-            <View style={styles.container}>
+          {auth => {
+            if (auth.authenticating) {
+              return <Loading visible={true} />;
+            }
+            if (!auth.authenticating && !auth.currentUser) {
+              return <CreateUserScreen auth={auth} />;
+            }
+            return (
               <View style={styles.container}>
-                <StatusBar barStyle="dark-content" />
-                <Navigator
-                  onNavigationStateChange={(prevState, currentState) => {
-                    const currentScreen = getCurrentRoute(currentState);
-                    const prevScreen = getCurrentRoute(prevState);
+                <View style={styles.container}>
+                  <StatusBar barStyle="dark-content" />
+                  <Navigator
+                    onNavigationStateChange={(prevState, currentState) => {
+                      const currentScreen = getCurrentRoute(currentState);
+                      const prevScreen = getCurrentRoute(prevState);
 
-                    if (prevScreen !== currentScreen) {
-                      Segment.screen(currentScreen.routeName);
-                    }
-                  }}
-                  screenProps={{auth, location: this.state.location}}
+                      if (prevScreen !== currentScreen) {
+                        Segment.screen(currentScreen.routeName);
+                      }
+                    }}
+                    screenProps={{auth, location: this.state.location}}
+                  />
+                </View>
+
+                <DropdownAlert
+                  ref={ref => registerDropdown(ref)}
+                  defaultContainer={styles.dropdownAlert}
                 />
               </View>
-
-              <DropdownAlert
-                ref={ref => registerDropdown(ref)}
-                defaultContainer={styles.dropdownAlert}
-              />
-            </View>
-          )}
+            );
+          }}
         </AuthProvider>
       </ApolloProvider>
     );
