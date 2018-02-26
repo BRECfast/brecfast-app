@@ -8,6 +8,7 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 import AuthenticatedActionButton from '../user/AuthenticatedActionButton';
 import ModalSelector from '../components/ModalSelector';
+import ParkSelector from '../components/ParkSelector';
 import Card from '../components/Card';
 import ListItem from '../components/ListItem';
 import {alertWithType} from '../alerts/service';
@@ -45,7 +46,15 @@ class CreateEventScreen extends Component {
   }
 
   _create = async () => {
-    const {goBack, state} = this.props.navigation;
+    const {navigate, state} = this.props.navigation;
+    const {currentUser} = this.props.screenProps.auth;
+    const participations = this.state.invitees.map(i => ({
+      role: 'MEMBER',
+      userId: i,
+    }));
+    if (currentUser) {
+      participations.push({role: 'OWNER', userId: currentUser.id});
+    }
     try {
       const event = await this.props.createEvent({
         variables: {
@@ -54,18 +63,19 @@ class CreateEventScreen extends Component {
           time: this.state.date.toISOString(),
           minParticipants: parseInt(this.state.minParticipants, 10),
           maxParticipants: parseInt(this.state.maxParticipants, 10),
+          participations: participations,
         },
       });
-      console.log(event);
       state.params.refetch();
-      goBack();
+      navigate('EventDetails', {eventId: event.data.createEvent.id});
     } catch (error) {
+      console.log(error);
       alertWithType('error', 'Whoops', 'Something went wrong...');
     }
   };
 
   render() {
-    const {data: {allParks = [], allActivities = []}} = this.props;
+    const {data: {allActivities = []}, screenProps: {location}} = this.props;
     const {activity, park, invitees} = this.state;
     const activityName = activity ? activity.title : 'Select Activity';
     const parkName = park ? park.title : 'Select Park';
@@ -134,10 +144,12 @@ class CreateEventScreen extends Component {
                     <Text>Park</Text>
                   </View>
                   <View style={{flex: 1}}>
-                    <ModalSelector
+                    <ParkSelector
                       title="Parks"
-                      items={allParks}
+                      activity={activity}
+                      location={location}
                       onSelect={park => {
+                        console.log(park);
                         this.setState({park});
                       }}
                     >
@@ -149,7 +161,7 @@ class CreateEventScreen extends Component {
                           </Text>
                         );
                       }}
-                    </ModalSelector>
+                    </ParkSelector>
                   </View>
                 </View>
               }
@@ -312,16 +324,6 @@ export default compose(
         id
         title: name
       }
-      allParks {
-        id
-        title: name
-        latitude
-        longitude
-      }
-      allUsers {
-        id
-        name
-      }
     }
   `),
   graphql(
@@ -332,6 +334,7 @@ export default compose(
         $time: DateTime!
         $minParticipants: Int!
         $maxParticpiants: Int
+        $participations: [EventparticipationsParticipation!]
       ) {
         createEvent(
           activityId: $activityId
@@ -339,6 +342,7 @@ export default compose(
           time: $time
           minParticipants: $minParticipants
           maxParticipants: $maxParticpiants
+          participations: $participations
         ) {
           id
           status
