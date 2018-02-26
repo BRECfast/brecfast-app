@@ -37,7 +37,7 @@ const authLink = setContext(async (_, {headers}) => {
 });
 
 const httpLink = new HttpLink({
-  uri: 'https://api.graph.cool/simple/v1/brecfast',
+  uri: 'http://localhost:60000/simple/v1/cje35wm3f000201398eo3q032',
 });
 
 // Replace http://my-api.graphql.com with your GraphQL API’s URL.

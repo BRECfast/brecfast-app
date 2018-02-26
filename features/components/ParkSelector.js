@@ -50,7 +50,6 @@ const addParksData = graphql(
         variables.latitude = location.coords.latitude;
         variables.longitude = location.coords.longitude;
       }
-      console.log(variables);
       return {variables};
     },
   }
