@@ -102,12 +102,18 @@ class EventInvitationsScreen extends Component {
 
 export default graphql(
   gql`
-    {
-      allUsers {
+    query allUsers($currentUserId: ID) {
+      allUsers(filter: {id_not: $currentUserId}) {
         id
         name
         email
       }
     }
-  `
+  `,
+  {
+    options(props) {
+      const {currentUser} = props.screenProps.auth;
+      return {variables: {currentUserId: currentUser && currentUser.id}};
+    },
+  }
 )(EventInvitationsScreen);
